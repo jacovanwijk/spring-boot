@@ -5,6 +5,8 @@ import com.heroes.practice.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -20,14 +22,15 @@ public class PersonController {
     }
 
     @PostMapping
-    public void addPerson(@RequestBody Person person) {
-        personService.addPerson(person);
+    public int addPerson(@Valid @NotNull @RequestBody Person person) {
+        return personService.addPerson(person);
     }
 
     @GetMapping
     public List<Person> getAllPeople(){
         return personService.getAllPeople();
     }
+
     @GetMapping(path = "/{personID}")
     public Person getPersonById(@PathVariable("personID") UUID id) {
         return personService.getPersonById(id)
@@ -35,12 +38,12 @@ public class PersonController {
     }
 
     @DeleteMapping(path = "/{personID}")
-    public void deletePerson(@PathVariable("personID") UUID id) {
-        personService.deletePerson(id);
+    public int deletePerson(@PathVariable("personID") UUID id) {
+        return personService.deletePerson(id);
     }
 
     @PutMapping(path = "/{personID}")
-    public void updatePerson(@PathVariable("personID") UUID id, @RequestBody Person personToUpdate) {
-        personService.updatePerson(id, personToUpdate);
+    public int updatePerson(@PathVariable("personID") UUID id, @Valid @NotNull @RequestBody Person personToUpdate) {
+        return personService.updatePerson(id, personToUpdate);
     }
 }
